@@ -79,3 +79,48 @@ EXPOSE 80
         }
     }
 }
+
+#Docker
+mkdir docker-compose-practical
+cd docker-compose-practical
+
+nano index.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Docker Compose Practical</title>
+</head>
+<body>
+    <h1>Welcome to Docker Compose</h1>
+    <p>Nginx and PostgreSQL are running!</p>
+</body>
+</html>
+
+nano docker-compose.yml
+
+
+services:
+  web:
+    image: nginx:latest
+    container_name: nginx-server
+    ports:
+      - "8082:80"
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+
+docker compose up -d
+
+docker ps
